@@ -26,6 +26,13 @@ public:
 
     bool nv21toyuv(YUV420ImageBYTE *pInImage, YUV420ImageBYTE *pOutImage);
 
+    bool nv12Rotate90(YUV420ImageBYTE *pInImage, YUV420ImageBYTE *pOutImage);
+
+    bool nv12Rotate180(YUV420ImageBYTE *pInImage, YUV420ImageBYTE *pOutImage);
+
+    bool nv12Rotate270(YUV420ImageBYTE *pInImage, YUV420ImageBYTE *pOutImage);
+
+
     //// ResizeFilter
     bool ReSize(GrayImageBYTE *pInImage, GrayImageBYTE *pOutImage);
 

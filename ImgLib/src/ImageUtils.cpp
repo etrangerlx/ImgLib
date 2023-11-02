@@ -27,8 +27,28 @@ bool ImageUtils::nv12toyuv(YUV420ImageBYTE *pInImage, YUVImageBYTE *pOutImage) {
                        tmp.GetUVPtr(), tmp.GetStride() >> 1,
                        tmp.GetUVPtr() + (tmp.GetStride() * tmp.GetHeight() >> 2), tmp.GetStride() >> 1,
                        pOutImage->GetPtr(), pOutImage->GetStride(),
-                       pOutImage->GetPtr() +pOutImage->GetHeight() * pOutImage->GetStride(), pOutImage->GetStride(),
-                       pOutImage->GetPtr() +pOutImage->GetHeight() * pOutImage->GetStride() * 2, pOutImage->GetStride(),
+                       pOutImage->GetPtr() + pOutImage->GetHeight() * pOutImage->GetStride(), pOutImage->GetStride(),
+                       pOutImage->GetPtr() + pOutImage->GetHeight() * pOutImage->GetStride() * 2,
+                       pOutImage->GetStride(),
                        pOutImage->GetWidth(), pOutImage->GetHeight());
     return true;
+}
+
+bool ImageUtils::nv12Rotate90(YUV420ImageBYTE *pInImage, YUV420ImageBYTE *pOutImage) {
+    libyuv::RotatePlane90(pInImage->GetPtr(), pInImage->GetStride(),
+                          pOutImage->GetPtr(), pOutImage->GetStride(),
+                          pInImage->GetWidth(), pInImage->GetHeight());
+
+    GrayImageBYTE U(pInImage->GetHeight() >> 1,pInImage->GetWidth() >> 1);
+    GrayImageBYTE V(pInImage->GetHeight() >> 1,pInImage->GetWidth() >> 1);
+    libyuv::SplitRotateUV90(pInImage->GetUVPtr(), pInImage->GetStride(),
+                            U.GetPtr(), U.GetStride(),
+                            V.GetPtr(), V.GetStride(),
+                            pInImage->GetWidth() >> 1,pInImage->GetHeight() >> 1);
+//    U.SaveBuffer("U.yuv");
+    libyuv::MergeUVPlane(U.GetPtr(), U.GetStride(),
+                         V.GetPtr(), V.GetStride(),
+                         pOutImage->GetUVPtr(), pOutImage->GetStride(),
+                         pOutImage->GetWidth() >> 1, pOutImage->GetHeight() >> 1);
+    return false;
 }

@@ -20,5 +20,10 @@ int main(int argc, char *argv[]) {
     ImageUtils filter;
     filter.nv12toyuv(&nv, &yuv);
     yuv.SaveBuffer("yuv444.yuv");
+
+    YUV420ImageBYTE nv90(height, stride);
+    filter.nv12Rotate90(&nv,&nv90);
+    nv90.SaveBuffer("nvrotate90.yuv");
+
     return 0;
 }
